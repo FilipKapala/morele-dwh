@@ -1,0 +1,36 @@
+name: Load Neon Data To BigQuery
+
+on:
+  workflow_dispatch:
+
+jobs:
+  load:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Create Google credentials file
+        run: |
+          echo '${{ secrets.GOOGLE_CREDENTIALS }}' > credentials.json
+
+      - name: Authenticate Google Cloud
+        env:
+          GOOGLE_APPLICATION_CREDENTIALS: credentials.json
+        run: |
+          python extract_load.py
+        env:
+          PG_HOST: ${{ secrets.PG_HOST }}
+          PG_DATABASE: ${{ secrets.PG_DATABASE }}
+          PG_USER: ${{ secrets.PG_USER }}
+          PG_PASSWORD: ${{ secrets.PG_PASSWORD }}
+          GOOGLE_APPLICATION_CREDENTIALS: credentials.json
