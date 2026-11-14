@@ -20,8 +20,7 @@ jobs:
         run: pip install -r requirements.txt
 
       - name: Create Google credentials file
-        run: |
-          echo '${{ secrets.GOOGLE_CREDENTIALS }}' > credentials.json
+        run: echo '${{ secrets.GOOGLE_CREDENTIALS }}' > credentials.json
 
       - name: Run extract script
         run: python extract_load.py
