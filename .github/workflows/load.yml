@@ -23,11 +23,8 @@ jobs:
         run: |
           echo '${{ secrets.GOOGLE_CREDENTIALS }}' > credentials.json
 
-      - name: Authenticate Google Cloud
-        env:
-          GOOGLE_APPLICATION_CREDENTIALS: credentials.json
-        run: |
-          python extract_load.py
+      - name: Run extract script
+        run: python extract_load.py
         env:
           PG_HOST: ${{ secrets.PG_HOST }}
           PG_DATABASE: ${{ secrets.PG_DATABASE }}
